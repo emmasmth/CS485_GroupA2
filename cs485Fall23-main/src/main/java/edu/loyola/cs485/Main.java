@@ -1,11 +1,10 @@
 package edu.loyola.cs485;
 
-import edu.loyola.cs485.model.dao.ClientDAO;
-import edu.loyola.cs485.model.entity.Client;
+import edu.loyola.cs485.model.dao.EquipmentDAO;
+import edu.loyola.cs485.model.entity.Equipment;
 import edu.loyola.cs485.view.MainFrame;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -17,11 +16,11 @@ public class Main {
     public static void listExample(){
         System.out.println("Hello world!");
         try {
-            List<Client> lst;
-            ClientDAO dao = new ClientDAO();
+            List<Equipment> lst;
+            EquipmentDAO dao = new EquipmentDAO();
             lst = dao.list();
-            for(Client c : lst) {
-                System.out.println(c.getName());
+            for(Equipment c : lst) {
+                System.out.println(c.getId());
             }
         }catch(Exception ex){
             System.out.println(ex);
@@ -31,18 +30,19 @@ public class Main {
     public static void preparedStatementExample(){
         String ConUrl = "jdbc:mysql://localhost";
         String Port = "3306";
-        String Database = "music_db";
+        String Database = "loyola_athletics";
         String Username = "root";
-        String Password = "csforever";
+        String Password = "password";  // CHANGE THIS
 
         try{
             String url = ConUrl+":"+Port+"/"+Database+"?user="+Username
                     +"&password="+Password;
             Connection con = DriverManager.getConnection(url);
-            String sql = "INSERT INTO client(name_client,email) VALUES(?,?)";
+            String sql = "INSERT INTO equipment(brand, color, description) VALUES(?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1,"Prof. H. Rocha");
-            pst.setString(2,"hsrocha@loyola.edu");
+            pst.setString(1,"Adidas");
+            pst.setString(2,"(ever)green");
+            pst.setString(3, "shoes basketball shoes i dont know");
             int rows = pst.executeUpdate();
 
             con.close();
@@ -55,21 +55,22 @@ public class Main {
         System.out.println("Hello world!");
         String ConUrl = "jdbc:mysql://localhost";
         String Port = "3306";
-        String Database = "music_db";
+        String Database = "loyola_athletics";
         String Username = "root";
-        String Password = "csforever";
+        String Password = "password"; // CHANGE THIS
 
         try{
             String url = ConUrl+":"+Port+"/"+Database+"?user="+Username
                     +"&password="+Password;
             Connection con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Client ORDER BY name_client");
+            ResultSet rs = st.executeQuery("SELECT * FROM equipment ORDER BY idequipment");
             while(rs.next()){
-                String cname = rs.getString("name_client");
-                int cid = rs.getInt("id_client");
-                Date dob = rs.getDate("dob");
-                System.out.printf("%d %s %s \n",cid,cname, dob);
+                int cid = rs.getInt("idequipment");
+                String brand = rs.getString("brand");
+                String color = rs.getString("color");
+                String description = rs.getString("description");
+                System.out.printf("%d %s %s %s\n",cid, brand, color, description);
             }
             con.close();
         } catch(Exception ex){
@@ -80,16 +81,16 @@ public class Main {
     public static void insertExample(){
         String ConUrl = "jdbc:mysql://localhost";
         String Port = "3306";
-        String Database = "music_db";
+        String Database = "loyola_athletics";
         String Username = "root";
-        String Password = "csforever";
+        String Password = "password"; // CHANGE THIS
 
         try{
             String url = ConUrl+":"+Port+"/"+Database+"?user="+Username
                     +"&password="+Password;
             Connection con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
-            int rows = st.executeUpdate("INSERT INTO artist(name_artist) VALUES ('Test')");
+            int rows = st.executeUpdate("INSERT INTO equipment(brand, color, description) VALUES ('test1', 'test1_color', 'test1_desc')");
 
             con.close();
         } catch(Exception ex){

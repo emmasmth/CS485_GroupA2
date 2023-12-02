@@ -8,9 +8,9 @@ import java.util.List;
 public abstract class AbstractDAO<E extends AbstractEntity> {
     protected String ConUrl = "jdbc:mysql://localhost";
     protected String Port = "3306";
-    protected String Database = "music_db";
+    protected String Database = "loyola_athletics";
     protected String Username = "root";
-    protected String Password = "csforever";
+    protected String Password = "password";  // CHANGE THIS
 
     public Connection getConnection() throws SQLException{
         String url = ConUrl+":"+Port+"/"+Database+"?user="+Username
@@ -20,7 +20,7 @@ public abstract class AbstractDAO<E extends AbstractEntity> {
     }
 
     public void setTestDatabase(){
-        this.Database = "music_db_test";
+        this.Database = "loyola_athletics_test";
     }
 
     public abstract void create(E entity) throws SQLException;

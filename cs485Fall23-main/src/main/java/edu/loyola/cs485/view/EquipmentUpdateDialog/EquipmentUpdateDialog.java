@@ -1,20 +1,26 @@
-package edu.loyola.cs485.view;
+package edu.loyola.cs485.view.EquipmentUpdateDialog;
 
-import edu.loyola.cs485.controller.ClientService;
+import edu.loyola.cs485.controller.EquipmentService;
+import edu.loyola.cs485.model.entity.Equipment;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
 
-public class ClientDialog extends JDialog {
+public class EquipmentUpdateDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField txtID;
-    private JTextField txtName;
-    private JTextField txtEmail;
-    private JTextField txtDoB;
+    private JTextField txtBrand;
+    private JTextField txtColor;
+    private JTextField txtDescription;
 
-    public ClientDialog() {
+
+    private JList lstClientUI;
+    private Equipment updated;
+
+    public EquipmentUpdateDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -49,18 +55,30 @@ public class ClientDialog extends JDialog {
 
     private void onOK() {
         // add your code here
-        try {
-            String name = txtName.getText();
-            String email = txtEmail.getText();
-            String strDob = txtDoB.getText();
+        try
+        {
+            String brand = (!txtBrand.getText().isEmpty()) ? txtBrand.getText() : updated.getBrand();
+            String color = (!txtColor.getText().isEmpty()) ? txtColor.getText() : updated.getColor();
+            String desc = (!txtDescription.getText().isEmpty()) ? txtDescription.getText() : updated.getDescription();
 
-            ClientService service = new ClientService();
-            service.createNewClient(name, email, strDob);
+            Equipment tothis = new Equipment();
+            tothis.setId(updated.getId());
+            tothis.setBrand(brand);
+            tothis.setColor(color);
+            tothis.setDescription(desc);
+
+            System.out.println(tothis.toString());
+
+            EquipmentService service = new EquipmentService();
+            service.setTothis(tothis);
+            service.update(updated);
 
             dispose();
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             System.out.println(ex);
-            JOptionPane.showMessageDialog(this,"Error: "+ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: "+ex.getMessage());
         }
     }
 
@@ -69,8 +87,13 @@ public class ClientDialog extends JDialog {
         dispose();
     }
 
+    public void setEquipment(Equipment e)
+    {
+        this.updated = e;
+    }
+
     public static void main(String[] args) {
-        ClientDialog dialog = new ClientDialog();
+        EquipmentUpdateDialog dialog = new EquipmentUpdateDialog();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);

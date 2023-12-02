@@ -1,10 +1,12 @@
 package edu.loyola.cs485.view;
 
+import edu.loyola.cs485.view.EquipmentUpdateDialog.EquipmentUpdateDialog;
+
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
     public MainFrame(){
-        super("CS485 Music Store");
+        super("Loyola Athletics");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,600);
         this.setJMenuBar(createMainMenu());
@@ -21,35 +23,44 @@ public class MainFrame extends JFrame {
         );
         menuFile.add(mniExit);
 
-        JMenu menuClient = new JMenu("Client");
-        JMenuItem mniClientInsert = new JMenuItem("New / Create");
-        mniClientInsert.addActionListener(e->{
-            newClientClick();
+        JMenu menuEquipment = new JMenu("Equipment");
+        JMenuItem mniEquipmentInsert = new JMenuItem("New / Create");
+        mniEquipmentInsert.addActionListener(e->{
+            newEquipmentClick();
         });
-        menuClient.add(mniClientInsert);
+        menuEquipment.add(mniEquipmentInsert);
 
-        JMenuItem mniClientCrud = new JMenuItem("CRUD");
-        mniClientCrud.addActionListener( e->{
-            crudClientClick();
+        JMenuItem mniEquipmentCrud = new JMenuItem("CRUD");
+        mniEquipmentCrud.addActionListener( e->{
+            crudEquipmentClick();
         });
-        menuClient.add(mniClientCrud);
+        menuEquipment.add(mniEquipmentCrud);
+
 
         bar.add(menuFile);
-        bar.add(menuClient);
+        bar.add(menuEquipment);
         return bar;
     }
 
-    public void newClientClick(){
-        ClientDialog dlg = new ClientDialog();
+    public void newEquipmentClick(){
+        EquipmentDialog dlg = new EquipmentDialog();
         dlg.pack();
         dlg.setVisible(true);
     }
 
-    public void crudClientClick(){
-        ClientCrudDialog dlg = new ClientCrudDialog();
+    public void crudEquipmentClick(){
+        EquipmentCrudDialog dlg = new EquipmentCrudDialog();
         dlg.pack();
         dlg.setVisible(true);
     }
+
+    public void updateEquipmentClick()
+    {
+        EquipmentUpdateDialog dlg = new EquipmentUpdateDialog();
+        dlg.pack();
+        dlg.setVisible(true);
+    }
+
 
 
 }

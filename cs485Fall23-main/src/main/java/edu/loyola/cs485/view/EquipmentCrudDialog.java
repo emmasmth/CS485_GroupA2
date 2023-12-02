@@ -1,13 +1,14 @@
 package edu.loyola.cs485.view;
 
-import edu.loyola.cs485.controller.ClientService;
-import edu.loyola.cs485.model.entity.Client;
+import edu.loyola.cs485.controller.EquipmentService;
+import edu.loyola.cs485.model.entity.Equipment;
+import edu.loyola.cs485.view.EquipmentUpdateDialog.EquipmentUpdateDialog;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.List;
 
-public class ClientCrudDialog extends JDialog {
+public class EquipmentCrudDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -15,7 +16,7 @@ public class ClientCrudDialog extends JDialog {
     private JButton newButton;
     private JList lstClientUI;
 
-    public ClientCrudDialog() {
+    public EquipmentCrudDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonCancel);
@@ -62,8 +63,21 @@ public class ClientCrudDialog extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
-        dispose();
+        try
+        {
+            Equipment selEquipment = (Equipment) lstClientUI.getSelectedValue();
+            EquipmentUpdateDialog dlg = new EquipmentUpdateDialog();
+            dlg.setEquipment(selEquipment);
+            dlg.pack();
+            dlg.setVisible(true);
+
+            populateList();
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this,"Error: "+ex.getMessage());
+        }
     }
 
     private void onCancel() {
@@ -72,7 +86,7 @@ public class ClientCrudDialog extends JDialog {
     }
 
     public void onNewClick(){
-        ClientDialog dlg=new ClientDialog();
+        EquipmentDialog dlg=new EquipmentDialog();
         dlg.pack();
         dlg.setVisible(true);
 
@@ -81,10 +95,10 @@ public class ClientCrudDialog extends JDialog {
 
     public void onDeleteClick(){
         try{
-            Client selClient = (Client) lstClientUI.getSelectedValue();
+            Equipment selEquipment = (Equipment) lstClientUI.getSelectedValue();
             //System.out.println(selClient);
-            ClientService service = new ClientService();
-            service.delete(selClient);
+            EquipmentService service = new EquipmentService();
+            service.delete(selEquipment);
 
             populateList();
         }catch(Exception ex){
@@ -95,8 +109,8 @@ public class ClientCrudDialog extends JDialog {
 
     public void populateList(){
         try {
-            ClientService service = new ClientService();
-            List lstdata = service.getClients();
+            EquipmentService service = new EquipmentService();
+            List lstdata = service.getEquipment();
 
             lstClientUI.setListData( lstdata.toArray() );
         }catch(Exception ex){
@@ -106,7 +120,7 @@ public class ClientCrudDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-        ClientCrudDialog dialog = new ClientCrudDialog();
+        EquipmentCrudDialog dialog = new EquipmentCrudDialog();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
